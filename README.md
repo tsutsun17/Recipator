@@ -12,3 +12,11 @@ flask==1.1.2
 ```
 $ pipenv install -r ./requirements.txt
 ```
+
+## herokuにデプロイ
+```
+$ heroku login
+$ git push heroku master
+$ heroku open
+```
+`heroku open` でhello worldが出てきたらデプロイ成功
