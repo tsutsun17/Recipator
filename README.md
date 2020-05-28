@@ -8,7 +8,7 @@ line-bot-sdk==1.16.0
 flask==1.1.2
 ```
 
-### インストール
+### 環境構築
 ```
 $ pipenv install -r ./requirements.txt
 ```
