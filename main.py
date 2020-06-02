@@ -27,6 +27,13 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
 
+# rich menu
+rich_menu_list = line_bot_api.get_rich_menu_list()
+if not rich_menu_list:
+    result = richmenu.createRichmeu()
+    if not result:
+        reply.reply_message(event, "FAILED")
+
 # herokuの確認用
 @app.route("/")
 def hello_world():
