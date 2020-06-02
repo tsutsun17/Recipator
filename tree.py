@@ -25,6 +25,7 @@ children_left = tree_.children_left # 各ノードからTrueへの分岐先ノ�
 children_right = tree_.children_right # 各ノードからFalseへの分岐先ノード番号（list）
 feature = tree_.feature # 各変数の番号
 classes = clf.classes_ # 分類
+value = tree_.value # 各ノードに所属するクラス(料理), list, 0なら対応するインデックスの料理は含まない 1なら含む
 
 is_leaves = np.zeros(shape=n_nodes, dtype=bool)
 stack = [(0, -1)]  # seed is the root node id and its parent depth
@@ -70,4 +71,7 @@ class QuestionsClass():
 question = QuestionsClass()
 
 for _ in range(n_questions):
+    if is_leaves[question.current_node]:
+        break
     question.cal_current_node()
+print(value[question.current_node])
