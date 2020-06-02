@@ -68,6 +68,22 @@ class QuestionsClass():
         else:
             self.current_node = children_right[self.current_node]
 
+    def set_ranking(self, ranking):
+        self.ranking = ranking
+        self.current_food = 0
+
+    def detect_meal(self):
+        # self.current_foodが食べたい料理を示すindexか？　違うなら+1する
+        line = y[ind] + u"を作りたいですか？ YesかNoで答えてください。"
+        print(line)
+        str_ans = str(input())
+        if str_ans == 'Yes':
+            return False
+        else:
+            self.current_food += 1
+            return True
+
+
 question = QuestionsClass()
 
 for _ in range(n_questions):
@@ -75,3 +91,8 @@ for _ in range(n_questions):
         break
     question.cal_current_node()
 print(value[question.current_node])
+ind = np.argsort(value[question.current_node].reshape(-1))[::-1] # indices that would be promising
+for i in ind:
+    if question.detect_meal():
+        break
+print(y[question.current_food])
