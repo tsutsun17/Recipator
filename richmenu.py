@@ -13,7 +13,7 @@ from linebot.models import (
     PostbackTemplateAction
 )
 
-def createRichmenu():
+def createRichmenu(line_bot_api):
     result = False
     try:
         # define a new richmenu
@@ -23,6 +23,7 @@ def createRichmenu():
             name = 'richmenu for randomchat',
             chat_bar_text = 'TAP HERE',
             areas=[
+                # ここにボタンを配置していく
                 RichMenuArea(
                     bounds=RichMenuBounds(x=0, y=0, width=480, height=405),
                     action=MessageAction(text="REMOVE")

@@ -30,7 +30,7 @@ handler = WebhookHandler(CHANNEL_SECRET)
 # rich menu
 rich_menu_list = line_bot_api.get_rich_menu_list()
 if not rich_menu_list:
-    result = richmenu.createRichmeu()
+    result = richmenu.createRichmeu(line_bot_api)
     if not result:
         reply.reply_message(event, "FAILED")
 
