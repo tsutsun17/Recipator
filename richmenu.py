@@ -23,7 +23,7 @@ def createRichmenu(line_bot_api):
             chat_bar_text = 'メニュー',
             areas=[
                 RichMenuArea(
-                    bounds=RichMenuBounds(x=500, y=0, width=500, height=688),
+                    bounds=RichMenuBounds(x=434.5, y=184, width=555.5, height=248),
                     action=MessageAction(text="Recipatorをはじめる")
                 ),
             ]
