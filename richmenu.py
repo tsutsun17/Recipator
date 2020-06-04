@@ -30,8 +30,7 @@ def createRichmenu(line_bot_api):
         )
         richMenuId = line_bot_api.create_rich_menu(rich_menu=rich_menu_to_create)
 
-        path = './images/hungry.png'
-        # path = './images/menu.png'
+        path = './images/menu.png'
 
         with open(path, 'rb') as f:
             line_bot_api.set_rich_menu_image(richMenuId, "image/png", f)
