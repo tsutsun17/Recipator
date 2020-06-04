@@ -3,8 +3,6 @@ import pandas as pd
 import pickle
 import pydotplus
 
-# python tree.py で実行可能
-
 # 不要か
 # csvデータをdfで取得
 df_foods = pd.read_csv('data.csv', header=0)
