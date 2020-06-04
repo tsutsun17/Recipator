@@ -17,6 +17,9 @@ from linebot.models import (
     MessageEvent,
     TextMessage,
     TextSendMessage,
+    QuickReplyButton,
+    MessageAction,
+    QuickReply
 )
 
 CHANNEL_ACCESS_TOKEN = settings.CHANNEL_ACCESS_TOKEN
@@ -52,12 +55,21 @@ def callback():
 
 
 @handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        # TextSendMessage(text=event.message.text)
-        TextSendMessage(text='返事しています')
-    )
+# def handle_message(event):
+#     line_bot_api.reply_message(
+#         event.reply_token,
+#         # TextSendMessage(text=event.message.text)
+#         TextSendMessage(text='返事しています')
+#     )
+def response_message(event):
+    language_list = ["はい", "いいえ"]
+
+    items = [QuickReplyButton(action=MessageAction(label=f"{language}", text=f"{language}")) for language in language_list]
+
+    messages = TextSendMessage(text="どの言語が好きですか？",
+                               quick_reply=QuickReply(items=items))
+
+    line_bot_api.reply_message(event.reply_token, messages=messages)
 
 if __name__ == "__main__":
     app.run()
