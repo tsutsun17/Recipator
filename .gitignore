@@ -1,4 +1,6 @@
 Pipfile.lock
 .env
+.env*
 .DS_Store
 memo.md
+images/menu.png

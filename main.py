@@ -1,6 +1,6 @@
 
 import os
-import settings
+import settings, richmenu
 from flask import (
     Flask,
     request,
@@ -26,13 +26,7 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
-
-# rich menu
-rich_menu_list = line_bot_api.get_rich_menu_list()
-if not rich_menu_list:
-    result = richmenu.createRichmeu(line_bot_api)
-    if not result:
-        reply.reply_message(event, "FAILED")
+richmenu.createRichmenu(line_bot_api)
 
 # herokuの確認用
 @app.route("/")
@@ -62,8 +56,7 @@ def callback():
 def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
-        # TextSendMessage(text=event.message.text)
-        TextSendMessage(text='返事しています')
+        TextSendMessage(text=event.message.text)
     )
 
 if __name__ == "__main__":

@@ -16,28 +16,22 @@ from linebot.models import (
 def createRichmenu(line_bot_api):
     result = False
     try:
-        # define a new richmenu
         rich_menu_to_create = RichMenu(
-            size = RichMenuSize(width=1200, height=405),
+            size = RichMenuSize(width=1000, height=688),
             selected = True,
             name = 'richmenu for randomchat',
-            chat_bar_text = 'TAP HERE',
+            chat_bar_text = 'メニュー',
             areas=[
-                # ここにボタンを配置していく
                 RichMenuArea(
-                    bounds=RichMenuBounds(x=0, y=0, width=480, height=405),
-                    action=MessageAction(text="REMOVE")
+                    bounds=RichMenuBounds(x=500, y=0, width=500, height=688),
+                    action=MessageAction(text="Recipatorをはじめる")
                 ),
-                RichMenuArea(
-                    bounds=RichMenuBounds(x=480, y=0, width=720, height=405),
-                    action=MessageAction(text="NEXT")
-                )
             ]
         )
         richMenuId = line_bot_api.create_rich_menu(rich_menu=rich_menu_to_create)
 
-        # upload an image for rich menu
         path = './images/hungry.png'
+        # path = './images/menu.png'
 
         with open(path, 'rb') as f:
             line_bot_api.set_rich_menu_image(richMenuId, "image/png", f)
