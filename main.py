@@ -15,6 +15,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent,
+    FollowEvent,
     TextMessage,
     TextSendMessage,
 )
@@ -59,6 +60,13 @@ def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text)
+    )
+
+@handler.add(FollowEvent)
+def handle_follow(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text='フォローありがとう！ \nメニューから「Recipatorをはじめる」を押してみてね！')
     )
 
 if __name__ == "__main__":
