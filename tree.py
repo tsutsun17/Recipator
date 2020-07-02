@@ -107,3 +107,5 @@ if __name__ == "__main__":
     for _ in range(n_questions+1):
         status, body = q.cal_current_node(0)
         print(status, body)
+    for i in range(len(body)):
+        print(y[body[i]])
