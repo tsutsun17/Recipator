@@ -78,6 +78,7 @@ def handle_message(event):
             )
             return
 
+        print(event.message.text)
         # ボタンを押していない場合
         if event.message.text!="Yes" and event.message.text!="No":
             line_bot_api.reply_message(
