@@ -14,15 +14,7 @@ import pydotplus
 # clf = DecisionTreeClassifier(max_depth=4)
 # # 説明変数と目的変数をセット
 # clf = clf.fit(X, y)
-#　決定木をdotファイルで保存
-# tree.export_graphviz(
-#     clf,out_file="tree.dot",
-#     feature_names=df_foods.columns[1:],
-#     class_names=y,
-#     filled=True,
-#     rounded=True
-#     )
-# pickleで保存
+# # pickleで保存
 # with open('clf.pickle', mode='wb') as f:
 #     pickle.dump(clf, f)
 
