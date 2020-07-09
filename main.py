@@ -63,10 +63,10 @@ def callback():
 def handle_message(event):
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
+    global questions
     print(questions)
 
     if event.message.text == 'Recipatorをはじめる':
-        global questions
         questions = tree.QuestionsClass(status=1)
         status, body = questions.call_first_question()
 
@@ -81,7 +81,6 @@ def handle_message(event):
             )
             return
 
-        print(event.message.text)
         # ボタンを押していない場合
         if event.message.text!="Yes" and event.message.text!="No":
             line_bot_api.reply_message(
