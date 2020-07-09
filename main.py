@@ -61,15 +61,16 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    answer_list = ["Yes", "No"]
+    items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
+
     if event.message.text == 'Recipatorをはじめる':
         global questions
         questions = tree.QuestionsClass(status=1)
         status, body = questions.call_first_question()
 
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=body)
-        )
+        messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
+        line_bot_api.reply_message(event.reply_token, messages=messages)
     else:
         # questionsのstatusが1出ない: 「Recipatorをはじめる」を押していない場合
         if questions.status!=1:
@@ -94,11 +95,7 @@ def handle_message(event):
         status, body = questions.cal_current_node(ans)
 
         if status=='question':
-            answer_list = ["Yes", "No"]
-            items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
-            messages = TextSendMessage(text=body,
-                               quick_reply=QuickReply(items=items))
-
+            messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
             line_bot_api.reply_message(event.reply_token, messages=messages)
             return
 
