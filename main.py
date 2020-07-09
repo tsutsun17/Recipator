@@ -89,6 +89,7 @@ def handle_message(event):
                 event.reply_token,
                 TextSendMessage(text='ボタンを押して回答してね！')
             )
+            questions.status = 1
             return
 
         # 1: Yes, 0: No
@@ -99,6 +100,7 @@ def handle_message(event):
         if status=='question':
             messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
             line_bot_api.reply_message(event.reply_token, messages=messages)
+            questions.status = 1
             return
 
         if status=='recipes':
