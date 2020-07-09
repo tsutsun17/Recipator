@@ -1,6 +1,6 @@
 
 import os
-import settings
+import settings, richmenu, tree
 from flask import (
     Flask,
     request,
@@ -15,6 +15,7 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     MessageEvent,
+    FollowEvent,
     TextMessage,
     TextSendMessage,
 )
@@ -26,6 +27,11 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
+
+questions = tree.QuestionsClass()
+
+# set rich menu
+richmenu.createRichmenu(line_bot_api)
 
 # herokuの確認用
 @app.route("/")
@@ -50,13 +56,63 @@ def callback():
 
     return 'OK'
 
-
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    if event.message.text == 'Recipatorをはじめる':
+        questions = tree.QuestionsClass(status=1)
+        status, body = questions.call_first_question()
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=body)
+        )
+    else:
+        # questionsのstatusが1出ない: 「Recipatorをはじめる」を押していない場合
+        if questions.status!=1:
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='メニューから「Recipatorをはじめる」を押してみてね！')
+            )
+            return
+
+        # ボタンを押していない場合
+        if event.message.text!="Yes" and event.message.text!="No":
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='ボタンを押して回答してね！')
+            )
+            return
+
+        # 1: Yes, 0: No
+        ans = 1 if event.message.text == "Yes" else 0
+
+        status, body = questions.cal_current_node(ans)
+
+        if status=='question':
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=body)
+            )
+            return
+
+        if status=='recipes':
+            line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text='//TODO: レシピ一覧')
+            )
+            questions.status = 0
+            return
+
+    # line_bot_api.reply_message(
+    #     event.reply_token,
+    #     TextSendMessage(text=event.message.text)
+    # )
+
+@handler.add(FollowEvent)
+def handle_follow(event):
     line_bot_api.reply_message(
         event.reply_token,
-        # TextSendMessage(text=event.message.text)
-        TextSendMessage(text='返事しています')
+        TextSendMessage(text='フォローありがとう！ \nメニューから「Recipatorをはじめる」を押してみてね！')
     )
 
 if __name__ == "__main__":

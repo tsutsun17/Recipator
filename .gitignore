@@ -1,4 +1,6 @@
 Pipfile.lock
 .env
-.idea/
+.env*
 .DS_Store
+memo.md
+.idea/

@@ -59,34 +59,40 @@ while len(stack) > 0:
         is_leaves[node_id] = True
 
 
-def change_str_ans_to_int(str_ans):
-    if str_ans == "Yes":
-        ans = 1
-        return ans
-    elif str_ans == "No":
-        ans = 0
-        return ans
-    else:
-        print("YesかNoで答えてください")
-        str_ans = str(input())
-        return change_str_ans_to_int(str_ans)
+# def change_str_ans_to_int(str_ans):
+#     if str_ans == "Yes":
+#         ans = 1
+#         return ans
+#     elif str_ans == "No":
+#         ans = 0
+#         return ans
+#     else:
+#         print("YesかNoで答えてください")
+#         str_ans = str(input())
+#         return change_str_ans_to_int(str_ans)
 
 # 質問の数
 n_questions = 4
 
 class QuestionsClass():
 
-    def __init__(self):
+    def __init__(self, status=0):
         self.current_node = 0
+        self.status = status # 0: inactive, 1: active
 
-    def cal_current_node(self):
-        print(X.columns[feature[self.current_node]], 'が食べたいですか？ YesかNoで答えてください。')
-        str_ans = str(input())
-        ans = change_str_ans_to_int(str_ans)
+    def call_first_question(self):
+        return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
+
+    def cal_current_node(self, ans):
+        if is_leaves[self.current_node]:
+            return 'recipes', np.argsort(value[self.current_node].reshape(-1))[::-1]
+
         if ans <= threshold[self.current_node]:
             self.current_node = children_left[self.current_node]
         else:
             self.current_node = children_right[self.current_node]
+
+        return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
 
     def set_ranking(self, ranking):
         self.ranking = ranking
@@ -104,16 +110,24 @@ class QuestionsClass():
             return False
 
 
-question = QuestionsClass()
+# question = QuestionsClass()
 
-for _ in range(n_questions):
-    if is_leaves[question.current_node]:
-        break
-    question.cal_current_node()
-print(value[question.current_node])
-ind = np.argsort(value[question.current_node].reshape(-1))[::-1] # indices that would be promising
-question.set_ranking(ind)
-for i in ind:
-    if question.detect_meal():
-        break
-print(y[question.current_food])
+# for _ in range(n_questions):
+#     if is_leaves[question.current_node]:
+#         break
+#     question.cal_current_node()
+# print(value[question.current_node])
+# ind = np.argsort(value[question.current_node].reshape(-1))[::-1] # indices that would be promising
+# question.set_ranking(ind)
+# for i in ind:
+#     if question.detect_meal():
+#         break
+# print(y[question.current_food])
+
+if __name__ == "__main__":
+    q = QuestionsClass()
+    for _ in range(n_questions+1):
+        status, body = q.cal_current_node(0)
+        print(status, body)
+    for i in range(len(body)):
+        print(y[body[i]])
