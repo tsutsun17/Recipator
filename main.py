@@ -18,6 +18,9 @@ from linebot.models import (
     FollowEvent,
     TextMessage,
     TextSendMessage,
+    QuickReplyButton,
+    MessageAction,
+    QuickReply
 )
 
 CHANNEL_ACCESS_TOKEN = settings.CHANNEL_ACCESS_TOKEN
@@ -89,10 +92,12 @@ def handle_message(event):
         status, body = questions.cal_current_node(ans)
 
         if status=='question':
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=body)
-            )
+            answer_list = ["Yes", "No"]
+            items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
+            messages = TextSendMessage(text=body,
+                               quick_reply=QuickReply(items=items))
+
+            line_bot_api.reply_message(event.reply_token, messages=messages)
             return
 
         if status=='recipes':
