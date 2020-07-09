@@ -63,6 +63,7 @@ def callback():
 def handle_message(event):
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
+    print(questions)
 
     if event.message.text == 'Recipatorをはじめる':
         global questions
