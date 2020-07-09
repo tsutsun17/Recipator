@@ -65,6 +65,7 @@ def handle_message(event):
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
     global questions
     print(questions)
+    print(questions.status)
 
     if event.message.text == 'Recipatorをはじめる':
         questions = tree.QuestionsClass(status=1)
@@ -74,6 +75,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, messages=messages)
     else:
         # questionsのstatusが1出ない: 「Recipatorをはじめる」を押していない場合
+
         if questions.status!=1:
             line_bot_api.reply_message(
                 event.reply_token,
