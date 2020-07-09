@@ -3,7 +3,29 @@ import pandas as pd
 import pickle
 import pydotplus
 
-# 不要か
+# 決定木作成コード
+# # csvデータをdfで取得
+# df_foods = pd.read_csv('data.csv', header=0)
+# # 説明変数
+# X = df_foods.loc[:,'Japanese food':'dessert']
+# # 目的変数
+# y = df_foods['Dish name']
+# # 分類器を作成。深さは４にした
+# clf = DecisionTreeClassifier(max_depth=4)
+# # 説明変数と目的変数をセット
+# clf = clf.fit(X, y)
+#　決定木をdotファイルで保存
+# tree.export_graphviz(
+#     clf,out_file="tree.dot",
+#     feature_names=df_foods.columns[1:],
+#     class_names=y,
+#     filled=True,
+#     rounded=True
+#     )
+# pickleで保存
+# with open('clf.pickle', mode='wb') as f:
+#     pickle.dump(clf, f)
+
 # csvデータをdfで取得
 df_foods = pd.read_csv('data.csv', header=0)
 # 説明変数
