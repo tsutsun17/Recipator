@@ -62,6 +62,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     if event.message.text == 'Recipatorをはじめる':
+        global questions
         questions = tree.QuestionsClass(status=1)
         status, body = questions.call_first_question()
 
