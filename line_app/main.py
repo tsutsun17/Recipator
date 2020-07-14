@@ -40,6 +40,8 @@ richmenu.createRichmenu(line_bot_api)
 # herokuの確認用
 @app.route("/")
 def hello_world():
+    users = db.session.query(User).all()
+    print(vars(users))
     return "hello world!"
 
 @app.route("/callback", methods=['POST'])
@@ -105,7 +107,7 @@ def handle_message(event):
 
     # current_nodeの更新
     current_node = questions.current_node
-    user.current_node = current_node
+    user.current_node = int(current_node)
     db.session.add(user)
     db.session.commit()
 

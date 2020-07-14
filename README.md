@@ -81,9 +81,7 @@ $ heroku config:set CHANNEL_ACCESS_TOKEN=<.envに書いてあるもの> --app "r
 $ heroku config:set CHANNEL_SECRET=<.envに書いてあるもの> --app "recipator"
 $ heroku config:set SQLALCHEMY_DATABASE_URI=<heroku postgres> --app "recipator"
 $ heroku config:set SQLALCHEMY_TRACK_MODIFICATIONS=False --app "recipator"
-$ heroku run flask db init
-$ heroku run flask db migrate
-$ heroku run flask db upgrade
+$ heroku run:detached flask db upgrade
 $ heroku open
 ```
 `heroku open` でhello worldが出てきたらデプロイ成功
