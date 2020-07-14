@@ -1,9 +1,12 @@
 
 import os
-import app.richmenu as richmenu, app.settings as settings
 import tree
+from line_app import *
+import line_app.richmenu as richmenu, line_app.settings as settings
+
+from line_app.models.user import User
+
 from flask import (
-    Flask,
     request,
     abort
 )
@@ -27,8 +30,6 @@ from linebot.models import (
 CHANNEL_ACCESS_TOKEN = settings.CHANNEL_ACCESS_TOKEN
 CHANNEL_SECRET = settings.CHANNEL_SECRET
 
-app = Flask(__name__)
-
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
 
@@ -36,6 +37,7 @@ questions = tree.QuestionsClass()
 
 # set rich menu
 richmenu.createRichmenu(line_bot_api)
+
 
 # herokuの確認用
 @app.route("/")
@@ -65,8 +67,8 @@ def handle_message(event):
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
     global questions
-    print(questions)
-    print(questions.status)
+
+    print(event)
 
     if event.message.text == 'Recipatorをはじめる':
         questions = tree.QuestionsClass(status=1)

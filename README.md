@@ -19,6 +19,43 @@ $ pipenv install -r ./requirements.txt --skip-lock
 新たなライブラリ入れたい場合は`requirements.txt`に書いて上記のコマンドを実行
 
 
+#### Postgresqlの導入
+
+```
+$ brew install postgresql
+```
+
+* 新しい`.env`が必要
+
+```
+$ initdb /usr/local/var/postgres -E utf8    # DBの初期化
+$ brew services start postgresql            # 起動
+$ createuser -s -P recipator_root           # ユーザー登録
+$ psql postgres                             # postgresに入る
+postgres=# CREATE DATABASE "recipator_db" OWNER "recipator_root";   # DBの作成
+postgres=# exit                             # postgresから出る
+$ pipenv run flask db init                  # マイグレーションのための準備
+$ pipenv run flask db migrate               # マイグレーション(Creates an automatic revision script.)
+$ pipenv run flask db upgrate               # マイクレーション実行(Upgrades the database.)
+```
+
+### DB（ローカル）のマイグレーション方法
+```
+$ pipenv run flask db migrate
+$ pipenv run flask db upgrate
+```
+
+ロールバックは以下の通り
+```
+$ pipenv run flask db downgrade
+```
+
+### DB(ローカル)の確認
+```
+$ psql recipator_db
+recipator_db=# \d   # テーブル確認
+```
+
 ## LINE BOT
 ### ローカルでの確認
 // MARK: これは今後できなさそう
