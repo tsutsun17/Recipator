@@ -73,6 +73,7 @@ def handle_message(event):
 
     if event.message.text == 'Recipatorをはじめる':
         user.status = 1
+        user.current_node = 0
         db.session.add(user)
         db.session.commit()
 
