@@ -6,7 +6,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    status = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.Integer, nullable=False)  # 0: inactive, 1: active
     line_user_id = db.Column(db.String(255), index=True, nullable=False, unique=True)
     curren_node = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)

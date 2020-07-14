@@ -40,8 +40,6 @@ richmenu.createRichmenu(line_bot_api)
 # herokuの確認用
 @app.route("/")
 def hello_world():
-    users = db.session.query(User).all()
-    print(users)
     return "hello world!"
 
 @app.route("/callback", methods=['POST'])
@@ -65,13 +63,16 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # TODO: ここでユーザーのstatusを確認
-    # users = db.session.query(User).\
-    #     filter(User.name=="name").\
-    #     all()
+    user_id = event.source.userId
+    user = db.session.query(User).filter(User.line_user_id==user_id).limit(1).all()
+    if len(user)==0:
+        user = User(status=0, line_user_id=user_id, current_node=0)
+        db.session.add(user)
+        db.session.commit()
+    print(1111111)
+    print(user)
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
-
-    print(event)
 
     if event.message.text == 'Recipatorをはじめる':
         questions = tree.QuestionsClass()

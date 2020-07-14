@@ -36,13 +36,13 @@ postgres=# CREATE DATABASE "recipator_db" OWNER "recipator_root";   # DBの作�
 postgres=# exit                             # postgresから出る
 $ pipenv run flask db init                  # マイグレーションのための準備
 $ pipenv run flask db migrate               # マイグレーション(Creates an automatic revision script.)
-$ pipenv run flask db upgrate               # マイクレーション実行(Upgrades the database.)
+$ pipenv run flask db upgrade               # マイクレーション実行(Upgrades the database.)
 ```
 
 ### DB（ローカル）のマイグレーション方法
 ```
 $ pipenv run flask db migrate
-$ pipenv run flask db upgrate
+$ pipenv run flask db upgrade
 ```
 
 ロールバックは以下の通り
@@ -77,8 +77,13 @@ $ ngrok http 5000
 $ heroku login
 $ git push heroku master
 $ heroku ps:scale web=1
-$ heroku config:set CHANNEL_ACCESS_TOKEN=<.envに書いてあるもの>
-$ heroku config:set CHANNEL_SECRET=<.envに書いてあるもの>
+$ heroku config:set CHANNEL_ACCESS_TOKEN=<.envに書いてあるもの> --app "recipator"
+$ heroku config:set CHANNEL_SECRET=<.envに書いてあるもの> --app "recipator"
+$ heroku config:set SQLALCHEMY_DATABASE_URI=<heroku postgres> --app "recipator"
+$ heroku config:set SQLALCHEMY_TRACK_MODIFICATIONS=False --app "recipator"
+$ heroku run flask db init
+$ heroku run flask db migrate
+$ heroku run flask db upgrade
 $ heroku open
 ```
 `heroku open` でhello worldが出てきたらデプロイ成功
