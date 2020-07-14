@@ -1,6 +1,7 @@
 
 import os
-import settings, richmenu, tree
+import app.richmenu as richmenu, app.settings as settings
+import tree
 from flask import (
     Flask,
     request,
@@ -124,4 +125,4 @@ def handle_follow(event):
     )
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

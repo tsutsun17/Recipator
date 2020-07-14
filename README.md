@@ -21,10 +21,10 @@ $ pipenv install -r ./requirements.txt --skip-lock
 
 ## LINE BOT
 ### ローカルでの確認
-// TODO: 未確認
+// MARK: これは今後できなさそう
 ```
 $ brew cask install ngrok
-$ pipenv run python3 main.py
+$ pipenv run python3 run.py
 ```
 別のターミナルで
 ```
