@@ -63,6 +63,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # TODO: ここでユーザーのstatusを確認
+    print(event)
+    print(event.source)
     user_id = event.source.userId
     user = db.session.query(User).filter(User.line_user_id==user_id).limit(1).all()
     if len(user)==0:
