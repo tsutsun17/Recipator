@@ -62,22 +62,18 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # TODO: ここでユーザーのstatusを確認
-    print(event)
-    print(event.source)
     user_id = event.source.user_id
-    print(user_id)
     user = db.session.query(User).filter(User.line_user_id==user_id).limit(1).all()
-    if len(user)==0:
-        user = User(status=0, line_user_id=user_id, current_node=0)
-        db.session.add(user)
-        db.session.commit()
-    print(1111111)
-    print(user)
+    user = user[0]
+
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
 
     if event.message.text == 'Recipatorをはじめる':
+        user.status = 1
+        db.session.add(user)
+        db.session.commit()
+
         questions = tree.QuestionsClass()
         status, body = questions.call_first_question()
 
@@ -85,9 +81,8 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, messages=messages)
         return
     
-    # questionsのstatusが1出ない: 「Recipatorをはじめる」を押していない場合
-    # TODO: statusで判断
-    if questions.status!=1:
+    # userのstatusが1でない: 「Recipatorをはじめる」を押していない場合
+    if user.status!=1:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='メニューから「Recipatorをはじめる」を押してみてね！')
@@ -100,18 +95,23 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text='ボタンを押して回答してね！')
         )
-        questions.status = 1
         return
 
     # 1: Yes, 0: No
     ans = 1 if event.message.text == "Yes" else 0
 
+    questions = tree.QuestionsClass(current_node=user.current_node)
     status, body = questions.cal_current_node(ans)
+
+    # current_nodeの更新
+    current_node = questions.current_node
+    user.current_node = current_node
+    db.session.add(user)
+    db.session.commit()
 
     if status=='question':
         messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
-        questions.status = 1
         return
 
     if status=='recipes':
@@ -119,7 +119,6 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text='//TODO: レシピ一覧')
         )
-        questions.status = 0
         return
 
     # line_bot_api.reply_message(
@@ -130,6 +129,11 @@ def handle_message(event):
 @handler.add(FollowEvent)
 def handle_follow(event):
     # TODO: ここでユーザー情報登録
+    user_id = event.source.user_id
+    user = User(status=0, line_user_id=user_id, current_node=0)
+    db.session.add(user)
+    db.session.commit()
+
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text='フォローありがとう！ \nメニューから「Recipatorをはじめる」を押してみてね！')
