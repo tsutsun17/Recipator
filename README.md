@@ -8,7 +8,13 @@ gunicorn == 20.0.4
 numpy == 1.18.4
 pandas == 0.24.1
 pydotplus == 2.0.2
+flask-sqlalchemy == 2.4.3
+flask-migrate == 2.5.3
+psycopg2 == 2.8.5
+
 scikit-learn == 0.23.1
+numpy == 1.18.4
+pandas == 0.24.1
 ```
 
 ### 環境構築
@@ -61,7 +67,7 @@ recipator_db=# \d   # テーブル確認
 // MARK: これは今後できなさそう
 ```
 $ brew cask install ngrok
-$ pipenv run python3 run.py
+$ pipenv run python3 app.py
 ```
 別のターミナルで
 ```
