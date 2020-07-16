@@ -29,6 +29,7 @@ class User(db.Model):
     def commit_db(self):
         db.session.add(self)
         db.session.commit()
+        return self
 
     @classmethod
     def find_by_line_user_id(cls, user_id):

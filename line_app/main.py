@@ -65,7 +65,7 @@ def handle_message(event):
     users = User.find_by_line_user_id(user_id)
     if len(users)==0:
         user = User(status=0, line_user_id=user_id, current_node=0)
-        user.commit_db()
+        user = user.commit_db()
     else:
         user = users[0]
 
