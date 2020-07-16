@@ -39,6 +39,10 @@ richmenu.createRichmenu(line_bot_api)
 # herokuの確認用
 @app.route("/")
 def hello_world():
+    users = User.find_by_line_user_id("1")
+    print(users)
+    user = users[0]
+    print(user)
     return "hello world!"
 
 @app.route("/callback", methods=['POST'])
@@ -71,7 +75,6 @@ def handle_message(event):
 
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
-    print(user)
     if event.message.text == 'Recipatorをはじめる':
         user.status = 1
         user.current_node = 0

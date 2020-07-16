@@ -33,6 +33,5 @@ class User(db.Model):
 
     @classmethod
     def find_by_line_user_id(cls, user_id):
-        users = db.session.query(User.id).filter(User.line_user_id==user_id).limit(1).all()
-
+        users = db.session.query(User).filter(User.line_user_id==user_id).limit(1).all()
         return users
