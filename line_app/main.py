@@ -78,7 +78,7 @@ def handle_message(event):
         user.commit_db()
 
         questions = tree.QuestionsClass()
-        status, body = questions.call_first_question()
+        status, body = questions.get_current_question()
 
         messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
@@ -92,18 +92,17 @@ def handle_message(event):
         )
         return
 
+    questions = tree.QuestionsClass(current_node=user.current_node)
+
     # ボタンを押していない場合
     if event.message.text!="Yes" and event.message.text!="No":
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='ボタンを押して回答してね！')
-        )
+        status, body = questions.get_current_question()
+        messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
+        line_bot_api.reply_message(event.reply_token, messages=messages)
         return
 
     # 1: Yes, 0: No
     ans = 1 if event.message.text == "Yes" else 0
-
-    questions = tree.QuestionsClass(current_node=user.current_node)
     status, body = questions.cal_current_node(ans)
 
     # current_nodeの更新
@@ -121,12 +120,10 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text='//TODO: レシピ一覧')
         )
+        # TODO: 一旦、レシピ一覧を出したら終了することにする
+        user.status = 0
+        user.commit_db()
         return
-
-    # line_bot_api.reply_message(
-    #     event.reply_token,
-    #     TextSendMessage(text=event.message.text)
-    # )
 
 @handler.add(FollowEvent)
 def handle_follow(event):
