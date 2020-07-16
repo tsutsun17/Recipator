@@ -39,10 +39,6 @@ richmenu.createRichmenu(line_bot_api)
 # herokuの確認用
 @app.route("/")
 def hello_world():
-    users = User.find_by_line_user_id("1")
-    print(users)
-    user = users[0]
-    print(user)
     return "hello world!"
 
 @app.route("/callback", methods=['POST'])
