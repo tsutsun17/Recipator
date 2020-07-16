@@ -76,9 +76,8 @@ n_questions = 4
 
 class QuestionsClass():
 
-    def __init__(self, status=0):
-        self.current_node = 0
-        self.status = status # 0: inactive, 1: active
+    def __init__(self, current_node=0):
+        self.current_node = current_node
 
     def call_first_question(self):
         return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
