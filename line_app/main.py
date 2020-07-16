@@ -36,12 +36,9 @@ handler = WebhookHandler(CHANNEL_SECRET)
 # set rich menu
 richmenu.createRichmenu(line_bot_api)
 
-
 # herokuの確認用
 @app.route("/")
 def hello_world():
-    users = db.session.query(User).all()
-    print(vars(users))
     return "hello world!"
 
 @app.route("/callback", methods=['POST'])
@@ -65,8 +62,12 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
-    user = db.session.query(User).filter(User.line_user_id==user_id).limit(1).all()
-    user = user[0]
+    users = User.find_by_line_user_id(user_id)
+    if len(users)==0:
+        user = User(status=0, line_user_id=user_id, current_node=0)
+        user.commit_db()
+    else:
+        user = users[0]
 
     answer_list = ["Yes", "No"]
     items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
@@ -74,8 +75,7 @@ def handle_message(event):
     if event.message.text == 'Recipatorをはじめる':
         user.status = 1
         user.current_node = 0
-        db.session.add(user)
-        db.session.commit()
+        user.commit_db()
 
         questions = tree.QuestionsClass()
         status, body = questions.call_first_question()
@@ -109,8 +109,7 @@ def handle_message(event):
     # current_nodeの更新
     current_node = questions.current_node
     user.current_node = int(current_node)
-    db.session.add(user)
-    db.session.commit()
+    user.commit_db()
 
     if status=='question':
         messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
@@ -131,11 +130,11 @@ def handle_message(event):
 
 @handler.add(FollowEvent)
 def handle_follow(event):
-    # TODO: ここでユーザー情報登録
     user_id = event.source.user_id
-    user = User(status=0, line_user_id=user_id, current_node=0)
-    db.session.add(user)
-    db.session.commit()
+    users = User.find_by_line_user_id(user_id)
+    if len(users)==0:
+        user = User(status=0, line_user_id=user_id, current_node=0)
+        user.commit_db()
 
     line_bot_api.reply_message(
         event.reply_token,
