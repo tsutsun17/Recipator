@@ -25,3 +25,13 @@ class User(db.Model):
             'created_at': self.created_at,
             'updated_at': self.updated_at
         }
+
+    def commit_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def find_by_line_user_id(cls, user_id):
+        users = db.session.query(User.id).filter(User.line_user_id==user_id).limit(1).all()
+
+        return users
