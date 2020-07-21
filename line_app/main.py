@@ -24,7 +24,10 @@ from linebot.models import (
     TextSendMessage,
     QuickReplyButton,
     MessageAction,
-    QuickReply
+    QuickReply,
+    TemplateSendMessage, 
+    CarouselTemplate, 
+    CarouselColumn
 )
 
 CHANNEL_ACCESS_TOKEN = settings.CHANNEL_ACCESS_TOKEN
@@ -130,16 +133,11 @@ def handle_message(event):
                                 {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}]),
 
 
-    messages = TemplateSendMessage(
-        alt_text='template',
-        template=CarouselTemplate(columns=notes),
-    )
-
-    line_bot_api.reply_message(event.reply_token, messages=messages)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text='template', template=CarouselTemplate(columns=notes))
+        messages = TemplateSendMessage(
+            alt_text='template',
+            template=CarouselTemplate(columns=notes),
         )
+        line_bot_api.reply_message(event.reply_token, messages=messages)
         return
 
     # line_bot_api.reply_message(
