@@ -2,7 +2,8 @@
 import os
 import tree
 from line_app import *
-import line_app.richmenu as richmenu, line_app.settings as settings
+import line_app.richmenu as richmenu
+import line_app.settings as settings
 
 from line_app.models.user import User
 
@@ -25,8 +26,8 @@ from linebot.models import (
     QuickReplyButton,
     MessageAction,
     QuickReply,
-    TemplateSendMessage, 
-    CarouselTemplate, 
+    TemplateSendMessage,
+    CarouselTemplate,
     CarouselColumn
 )
 
@@ -47,6 +48,7 @@ def hello_world():
     print(vars(users))
     return "hello world!"
 
+
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -65,14 +67,17 @@ def callback():
 
     return 'OK'
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
-    user = db.session.query(User).filter(User.line_user_id==user_id).limit(1).all()
+    user = db.session.query(User).filter(
+        User.line_user_id == user_id).limit(1).all()
     user = user[0]
 
     answer_list = ["Yes", "No"]
-    items = [QuickReplyButton(action=MessageAction(label=f"{answer}", text=f"{answer}")) for answer in answer_list]
+    items = [QuickReplyButton(action=MessageAction(
+        label=f"{answer}", text=f"{answer}")) for answer in answer_list]
 
     if event.message.text == 'Recipatorをはじめる':
         user.status = 1
@@ -83,12 +88,13 @@ def handle_message(event):
         questions = tree.QuestionsClass()
         status, body = questions.call_first_question()
 
-        messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
+        messages = TextSendMessage(
+            text=body, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
         return
-    
+
     # userのstatusが1でない: 「Recipatorをはじめる」を押していない場合
-    if user.status!=1:
+    if user.status != 1:
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='メニューから「Recipatorをはじめる」を押してみてね！')
@@ -96,7 +102,7 @@ def handle_message(event):
         return
 
     # ボタンを押していない場合
-    if event.message.text!="Yes" and event.message.text!="No":
+    if event.message.text != "Yes" and event.message.text != "No":
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='ボタンを押して回答してね！')
@@ -115,23 +121,24 @@ def handle_message(event):
     db.session.add(user)
     db.session.commit()
 
-    if status=='question':
-        messages = TextSendMessage(text=body, quick_reply=QuickReply(items=items))
+    if status == 'question':
+        messages = TextSendMessage(
+            text=body, quick_reply=QuickReply(items=items))
         line_bot_api.reply_message(event.reply_token, messages=messages)
         return
 
-    if status=='recipes':
+    if status == 'recipes':
         notes = [CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle02.jpg",
-                            title="夏野菜の和風パスタ",
-                            text="おいしいよ",
-                            actions=[{"type": "message","label": "レシピを見る","text": "https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043"}]),
+                                title="夏野菜の和風パスタ",
+                                text="おいしいよ",
+                                actions=[{"type": "message", "label": "レシピを見る", "text": "https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043"}]),
 
                  CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle03.jpg",
-                            title="カニ缶とわかめのパスタ",
-                            text="材料がおおいよ",
-                            actions=[
-                                {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
-        ]
+                                title="カニ缶とわかめのパスタ",
+                                text="材料がおおいよ",
+                                actions=[
+                                    {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
+                 ]
         messages = TemplateSendMessage(
             alt_text='template',
             template=CarouselTemplate(columns=notes),
@@ -144,6 +151,7 @@ def handle_message(event):
     #     TextSendMessage(text=event.message.text)
     # )
 
+
 @handler.add(FollowEvent)
 def handle_follow(event):
     # TODO: ここでユーザー情報登録
@@ -152,26 +160,27 @@ def handle_follow(event):
     db.session.add(user)
     db.session.commit()
 
-    notes = [CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle02.jpg",
-                            title="夏野菜の和風パスタ",
-                            text="おいしいよ",
-                            actions=[{"type": "message",
-                                "label": "レシピを見る",
-                                "text": "https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043"}]),
+    notes = [
+        CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle02.jpg",
+                       title="夏野菜の和風パスタ",
+                       text="おいしいよ",
+                       actions=[{"type": "message",
+                                 "label": "レシピを見る",
+                                 "text": "https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043"}]),
 
-             CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle03.jpg",
-                            title="カニ缶とわかめのパスタ",
-                            text="材料がおおいよ",
-                            actions=[
-                                {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
-             ]
+        CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle03.jpg",
+                       title="カニ缶とわかめのパスタ",
+                       text="材料がおおいよ",
+                       actions=[
+                           {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
+    ]
+    messages = TemplateSendMessage(
+        alt_text='template',
+        template=CarouselTemplate(columns=notes)
+    )
+    line_bot_api.reply_message(event.reply_token, messages=messages)
+    return
 
-        messages = TemplateSendMessage(
-            alt_text='template',
-            template=CarouselTemplate(columns=notes),
-        )
-        line_bot_api.reply_message(event.reply_token, messages=messages)
-        return
 
 if __name__ == "__main__":
     app.run(debug=True)
