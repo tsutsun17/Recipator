@@ -116,7 +116,6 @@ def handle_message(event):
 
     if status=='recipes':
         recipes = Recipe.find_by_recipe_indexes(body)
-        print(recipes)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='//TODO: レシピ一覧')
