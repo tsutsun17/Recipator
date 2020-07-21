@@ -130,9 +130,8 @@ def handle_message(event):
                             title="カニ缶とわかめのパスタ",
                             text="材料がおおいよ",
                             actions=[
-                                {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}]),
-
-
+                                {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
+        ]
         messages = TemplateSendMessage(
             alt_text='template',
             template=CarouselTemplate(columns=notes),
@@ -153,10 +152,26 @@ def handle_follow(event):
     db.session.add(user)
     db.session.commit()
 
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text='フォローありがとう！ \nメニューから「Recipatorをはじめる」を押してみてね！')
-    )
+    notes = [CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle02.jpg",
+                            title="夏野菜の和風パスタ",
+                            text="おいしいよ",
+                            actions=[{"type": "message",
+                                "label": "レシピを見る",
+                                "text": "https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043https://img.cpcdn.com/recipes/6359684/m/862f0aa25edbe746abc786ced0586241?u=34894707&p=1595124043"}]),
+
+             CarouselColumn(thumbnail_image_url="https://renttle.jp/static/img/renttle03.jpg",
+                            title="カニ缶とわかめのパスタ",
+                            text="材料がおおいよ",
+                            actions=[
+                                {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
+             ]
+
+        messages = TemplateSendMessage(
+            alt_text='template',
+            template=CarouselTemplate(columns=notes),
+        )
+        line_bot_api.reply_message(event.reply_token, messages=messages)
+        return
 
 if __name__ == "__main__":
     app.run(debug=True)
