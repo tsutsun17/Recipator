@@ -9,14 +9,11 @@ from linebot.models import (
 
 from line_app.models import Recipe
 
-
-
-
 def setRecipeCarouseColumn(recipe):
     column = CarouselColumn(
         thumbnail_image_url=recipe.image_url,
         title=recipe.name,
-        text='',
+        text='美味しいよ',
         actions=[
             {
                 'type': 'uri',
