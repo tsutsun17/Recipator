@@ -129,22 +129,24 @@ def handle_message(event):
 
     if status == 'recipes':
         notes = [
-            CarouselColumn(thumbnail_image_url="https://jp.rakuten-static.com/recipe-space/d/strg/ctrl/3/38a48fa0dab1e95c961ae0886c7371935eedbd81.04.2.3.2.jpg?thum=58",
-                       title="夏野菜の和風パスタ",
-                       text="おいしいよ",
-                       actions=[
-                           {"type": "message",
-                            "label": "レシピを見る",
-                            "text": "https://recipe.rakuten.co.jp/recipe/1740021616/"}]),
+            CarouselColumn(
+                thumbnail_image_url="https://jp.rakuten-static.com/recipe-space/d/strg/ctrl/3/38a48fa0dab1e95c961ae0886c7371935eedbd81.04.2.3.2.jpg?thum=58",
+                title="夏野菜の和風パスタ",
+                text="おいしいよ",
+                actions=[
+                    {"type": "message",
+                     "label": "レシピを見る",
+                     "text": "https://recipe.rakuten.co.jp/recipe/1740021616/"}]),
 
-            CarouselColumn(thumbnail_image_url="https://jp.rakuten-static.com/recipe-space/d/strg/ctrl/3/38a48fa0dab1e95c961ae0886c7371935eedbd81.04.2.3.2.jpg?thum=58",
-                       title="カニ缶とわかめのパスタ",
-                       text="材料がおおいよ",
-                       actions=[
-                           {"type": "message",
-                            "label": "レシピを見る",
-                            "text": "https://cookpad.com/recipe/6359468"}])      {"type": "message", "label": "レシピを見る", "text": "https://cookpad.com/recipe/6359468"}])
-            ]
+            CarouselColumn(
+                thumbnail_image_url="https://jp.rakuten-static.com/recipe-space/d/strg/ctrl/3/38a48fa0dab1e95c961ae0886c7371935eedbd81.04.2.3.2.jpg?thum=58",
+                title="カニ缶とわかめのパスタ",
+                text="材料がおおいよ",
+                actions=[
+                    {"type": "message",
+                     "label": "レシピを見る",
+                     "text": "https://cookpad.com/recipe/6359468"}])
+        ]
         messages = TemplateSendMessage(
             alt_text='template',
             template=CarouselTemplate(columns=notes),
