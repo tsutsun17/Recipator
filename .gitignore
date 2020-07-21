@@ -5,3 +5,4 @@ Pipfile.lock
 memo.md
 .idea/
 __pycache__/
+.sh
