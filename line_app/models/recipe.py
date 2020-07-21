@@ -40,12 +40,12 @@ class Recipe(db.Model):
         recipes = db.session.query(Recipe).filter(Recipe.recipe_index.in_(recipe_indexes)).all()
         return recipes
 
-    @staticmethod
-    def delete_recipes():
+    @classmethod
+    def delete_recipes(cls):
         db.session.query(Recipe).delete()
         return
     
-    @staticmethod
-    def get_all_recipes():
+    @classmethod
+    def get_all_recipes(cls):
         recipes = db.session.query(Recipe).all()
         return recipes
