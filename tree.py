@@ -68,12 +68,8 @@ n_questions = 4
 
 class QuestionsClass():
 
-    def __init__(self, status=0):
-        self.current_node = 0
-        self.status = status # 0: inactive, 1: active
-
-    def call_first_question(self):
-        return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
+    def __init__(self, current_node=0):
+        self.current_node = current_node
 
     def cal_current_node(self, ans):
         if is_leaves[self.current_node]:
@@ -84,6 +80,9 @@ class QuestionsClass():
         else:
             self.current_node = children_right[self.current_node]
 
+        return self.get_current_question()
+
+    def get_current_question(self):
         return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
 
     def set_ranking(self, ranking):
