@@ -6,8 +6,8 @@ class Recipe(db.Model):
     __tablename__ = 'recipes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    recipe_index = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(255), index=True, nullable=False, unique=True)
+    recipe_index = db.Column(db.Integer, index=True, nullable=False, unique=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
     image_url = db.Column(db.String(255), nullable=False, unique=True)
     recipe_url = db.Column(db.String(255), nullable=False, unique=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -34,8 +34,18 @@ class Recipe(db.Model):
         db.session.add(self)
         db.session.commit()
         return self
-
+    
     @classmethod
     def find_by_recipe_indexes(cls, recipe_indexes):
         recipes = db.session.query(Recipe).filter(Recipe.recipe_index.in_(recipe_indexes)).all()
+        return recipes
+
+    @staticmethod
+    def delete_recipes():
+        db.session.query(Recipe).delete()
+        return
+    
+    @staticmethod
+    def get_all_recipes():
+        recipes = db.session.query(Recipe).all()
         return recipes

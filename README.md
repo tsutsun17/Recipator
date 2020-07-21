@@ -43,6 +43,7 @@ postgres=# exit                             # postgresから出る
 $ pipenv run flask db init                  # マイグレーションのための準備
 $ pipenv run flask db migrate               # マイグレーション(Creates an automatic revision script.)
 $ pipenv run flask db upgrade               # マイクレーション実行(Upgrades the database.)
+$ pipenv run python3 db_seed.py             # Recipeデータの挿入
 ```
 
 ### DB（ローカル）のマイグレーション方法
@@ -88,6 +89,7 @@ $ heroku config:set CHANNEL_SECRET=<.envに書いてあるもの> --app "recipat
 $ heroku config:set SQLALCHEMY_DATABASE_URI=<heroku postgres> --app "recipator"
 $ heroku config:set SQLALCHEMY_TRACK_MODIFICATIONS=False --app "recipator"
 $ heroku run:detached flask db upgrade
+$ heroku run:detached python3 db_seed.py
 $ heroku open
 ```
 `heroku open` でhello worldが出てきたらデプロイ成功
