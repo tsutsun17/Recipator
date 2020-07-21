@@ -115,11 +115,12 @@ def handle_message(event):
         return
 
     if status=='recipes':
+        recipes = Recipe.find_by_recipe_indexes(body)
+        print(recipes)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text='//TODO: レシピ一覧')
         )
-        # TODO: 一旦、レシピ一覧を出したら終了することにする
         user.status = 0
         user.commit_db()
         return
