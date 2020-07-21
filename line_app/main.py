@@ -3,6 +3,7 @@ import os
 import tree
 from line_app import *
 import line_app.richmenu as richmenu, line_app.settings as settings
+import line_app.recipe_ui as recipe_ui
 
 from line_app.models import User, Recipe
 
@@ -118,7 +119,7 @@ def handle_message(event):
         recipes = Recipe.find_by_recipe_indexes(body)
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text='//TODO: レシピ一覧')
+            recipe_ui.setTemplateSendMessage(recipes)
         )
         user.status = 0
         user.commit_db()
