@@ -18,7 +18,7 @@ def setRecipeCarouseColumn(recipe):
             {
                 'type': 'uri',
                 'label': 'レシピをみる',
-                'text': recipe.recipe_url
+                'uri': recipe.recipe_url
             }
         ]
     )
