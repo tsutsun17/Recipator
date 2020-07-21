@@ -19,11 +19,11 @@ import pydotplus
 #     pickle.dump(clf, f)
 
 # csvデータをdfで取得
-df_foods = pd.read_csv('data.csv', header=0)
+df_foods = pd.read_csv('new_food_data.csv', header=0)
 # 説明変数
-X = df_foods.loc[:,'Japanese food':'dessert']
+X = df_foods.loc[:,'魚介系':'ふわっとしたもの']
 # 目的変数
-y = df_foods['Dish name']
+y = df_foods['料理名']
 
 # モデル呼び出し
 with open('clf.pickle', mode='rb') as f:
@@ -68,22 +68,23 @@ n_questions = 4
 
 class QuestionsClass():
 
-    def __init__(self, status=0):
-        self.current_node = 0
-        self.status = status # 0: inactive, 1: active
-
-    def call_first_question(self):
-        return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
+    def __init__(self, current_node=0, max_ans=5):
+        self.current_node = current_node
+        self.max_ans = max_ans
 
     def cal_current_node(self, ans):
-        if is_leaves[self.current_node]:
-            return 'recipes', np.argsort(value[self.current_node].reshape(-1))[::-1]
+        if is_leaves[self.current_node] or (value[self.current_node].reshape(-1) >= 1).sum() <= self.max_ans:
+            recipes = np.where(value[self.current_node].reshape(-1) >= 1)[::self.max_ans]
+            return 'recipes', recipes
 
         if ans <= threshold[self.current_node]:
             self.current_node = children_left[self.current_node]
         else:
             self.current_node = children_right[self.current_node]
 
+        return self.get_current_question()
+
+    def get_current_question(self):
         return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
 
     def set_ranking(self, ranking):
@@ -118,8 +119,13 @@ class QuestionsClass():
 
 if __name__ == "__main__":
     q = QuestionsClass()
-    for _ in range(n_questions+1):
+    print(q.get_current_question())
+    while True:
         status, body = q.cal_current_node(0)
         print(status, body)
+        if status == "recipes":
+            break
+    print(body)
     for i in range(len(body)):
+        print(body[i])
         print(y[body[i]])
