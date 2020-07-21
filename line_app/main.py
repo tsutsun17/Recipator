@@ -116,6 +116,8 @@ def handle_message(event):
 
     if status=='recipes':
         print(body)
+        body = body.tolist()
+        print(body)
         recipes = Recipe.find_by_recipe_indexes(body)
         print(recipes)
         line_bot_api.reply_message(
