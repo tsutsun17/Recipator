@@ -16,7 +16,7 @@ def setRecipeCarouseColumn(recipe):
     column = CarouselColumn(
         thumbnail_image_url=recipe.image_url,
         title=recipe.name,
-        text='おいしいよ',
+        text='',
         actions=[
             {
                 'type': 'message',
