@@ -19,7 +19,7 @@ def setRecipeCarouseColumn(recipe):
         text='',
         actions=[
             {
-                'type': 'message',
+                'type': 'uri',
                 'label': 'レシピをみる',
                 'text': recipe.recipe_url
             }
