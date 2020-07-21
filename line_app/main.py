@@ -4,7 +4,7 @@ import tree
 from line_app import *
 import line_app.richmenu as richmenu, line_app.settings as settings
 
-from line_app.models.user import User
+from line_app.models import User, Recipe
 
 from flask import (
     request,
