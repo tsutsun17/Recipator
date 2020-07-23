@@ -73,14 +73,14 @@ class QuestionsClass():
         self.max_ans = max_ans
 
     def cal_current_node(self, ans):
-        if is_leaves[self.current_node] or (value[self.current_node].reshape(-1) >= 1).sum() <= self.max_ans:
-            recipes = np.where(value[self.current_node].reshape(-1) >= 1)[::self.max_ans]
-            return 'recipes', recipes[0].tolist()
-
         if ans <= threshold[self.current_node]:
             self.current_node = children_left[self.current_node]
         else:
             self.current_node = children_right[self.current_node]
+
+        if is_leaves[self.current_node] or (value[self.current_node].reshape(-1) >= 1).sum() <= self.max_ans:
+            recipes = np.where(value[self.current_node].reshape(-1) >= 1)[::self.max_ans]
+            return 'recipes', recipes[0].tolist()
 
         return self.get_current_question()
 
