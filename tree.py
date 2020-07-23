@@ -21,7 +21,7 @@ import pydotplus
 # csvデータをdfで取得
 df_foods = pd.read_csv('new_food_data.csv', header=0)
 # 説明変数
-X = df_foods.loc[:,'魚介系':'ふわっとしたもの']
+X = df_foods.loc[:,'ヘルシーなもの':'さっと食べれるもの']
 # 目的変数
 y = df_foods['料理名']
 
