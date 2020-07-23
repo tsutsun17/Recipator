@@ -85,7 +85,7 @@ class QuestionsClass():
         return self.get_current_question()
 
     def get_current_question(self):
-        return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？ YesかNoで答えてください。'
+        return 'question', X.columns[feature[self.current_node]]+'が食べたいですか？'
 
     def set_ranking(self, ranking):
         self.ranking = ranking
@@ -93,7 +93,7 @@ class QuestionsClass():
 
     def detect_meal(self):
         # self.current_foodが食べたい料理を示すindexか？　違うなら+1する
-        line = y[self.ranking[self.current_food]] + u"を作りたいですか？ YesかNoで答えてください。"
+        line = y[self.ranking[self.current_food]] + u"を作りたいですか？"
         print(line)
         str_ans = str(input())
         if str_ans == 'Yes':
